@@ -21,7 +21,7 @@ class _PianoState extends State<Piano> {
 
   Future<void> setupMIDIPlugin() async {
     flutterMidi.unmute();
-    ByteData _byte = await rootBundle.load('assets/piano.sf2');
+    ByteData _byte = await rootBundle.load('assets/Piano.sf2');
     flutterMidi.prepare(sf2: _byte);
   }
 
@@ -61,13 +61,13 @@ class _PianoState extends State<Piano> {
           ]))),
           body: ListView.builder(
             itemCount: 7,
-            scrollDirection: Axis.horizontal,
+            scrollDirection: Axis.vertical,
             controller: ScrollController(initialScrollOffset: 1500.0),
             itemBuilder: (BuildContext context, int index) {
               final int i = index * 12;
               return SafeArea(
                 child: Stack(children: <Widget>[
-                  Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                  Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
                     _buildKey(24 + i, false),
                     _buildKey(26 + i, false),
                     _buildKey(28 + i, false),
@@ -78,21 +78,21 @@ class _PianoState extends State<Piano> {
                   ]),
                   Positioned(
                       left: 0.0,
-                      right: 0.0,
-                      bottom: 100,
+                      //right: 80.0,
+                      bottom: 8,
                       top: 0.0,
-                      child: Row(
+                      child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
-                            Container(width: keyWidth * .5),
+                            Container(height: keyWidth * .5),
                             _buildKey(25 + i, true),
                             _buildKey(27 + i, true),
-                            Container(width: keyWidth),
+                            Container(height: keyWidth),
                             _buildKey(30 + i, true),
                             _buildKey(32 + i, true),
                             _buildKey(34 + i, true),
-                            Container(width: keyWidth * .5),
+                            Container(height: keyWidth * .5),
                           ])),
                 ]),
               );
@@ -127,11 +127,11 @@ class _PianoState extends State<Piano> {
                 ))),
         Positioned(
             left: 0.0,
-            right: 0.0,
+            right: 15.0,
             bottom: 20.0,
             child: _showLabels
                 ? Text(pitchName,
-                    textAlign: TextAlign.center,
+                    textAlign: TextAlign.right,
                     style: TextStyle(
                         color: !accidental ? Colors.black : Colors.white))
                 : Container()),
@@ -139,9 +139,10 @@ class _PianoState extends State<Piano> {
     );
     if (accidental) {
       return Container(
-          width: keyWidth,
-          margin: EdgeInsets.symmetric(horizontal: 2.0),
-          padding: EdgeInsets.symmetric(horizontal: keyWidth * .1),
+          height: keyWidth,
+          width: keyWidth * 3,
+          margin: EdgeInsets.symmetric(vertical: 2.0),
+          padding: EdgeInsets.symmetric(vertical: keyWidth * .1),
           child: Material(
               elevation: 6.0,
               borderRadius: borderRadius,
@@ -149,11 +150,11 @@ class _PianoState extends State<Piano> {
               child: pianoKey));
     }
     return Container(
-        width: keyWidth,
+        height: keyWidth,
         child: pianoKey,
-        margin: EdgeInsets.symmetric(horizontal: 2.0));
+        margin: EdgeInsets.symmetric(vertical: 2.0));
   }
 }
 
 const BorderRadius borderRadius = BorderRadius.only(
-    bottomLeft: Radius.circular(10.0), bottomRight: Radius.circular(10.0));
+    topRight: Radius.circular(10.0), bottomRight: Radius.circular(10.0));
